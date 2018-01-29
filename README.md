@@ -4,6 +4,9 @@
 This is an Restful API for Node.js and MySQL that is designed after PHP Laravel
 
 ##### MVC         
+##### Routing         : Express
+##### ORM Database    : Sequelize
+##### Authentication  : Passport, JWT
 
 ## Installation
 
