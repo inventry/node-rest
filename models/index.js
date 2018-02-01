@@ -23,8 +23,8 @@ Object.keys(db).forEach(modelName => {
     db[modelName].associate(db);
   }
 });
-
 //************ DB RELATIONS ************
+
 
 //One to Many
 db.Catalog.belongsTo(db.Company);
