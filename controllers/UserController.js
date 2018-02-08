@@ -1,5 +1,5 @@
 const User = require('../models').User;
-const authService   = require('./../services/AuthService');
+const authService = require('./../services/AuthService');
 
 // CREATE
 const create = async function(req, res){

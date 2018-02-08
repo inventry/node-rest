@@ -27,8 +27,8 @@ Object.keys(db).forEach(modelName => {
 
 
 //One to Many
-db.Catalog.belongsTo(db.Company);
-db.Company.hasMany(db.Catalog);
+// db.Catalog.belongsTo(db.Company);
+// db.Company.hasMany(db.Catalog);
 
 //Many to Many
 db.User.belongsToMany(db.Company, {through: 'UserCompany'});
