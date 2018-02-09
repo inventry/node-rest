@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
   res.json({status:"success", message:"Parcel Pending API", data:{"version_number":"v1.0.0"}})
 });
 
-
+// User Routes
 router.post(    '/users',           UserController.create);                                                    // C
 router.get(     '/users',           passport.authenticate('jwt', {session:false}), UserController.get);        // R
 router.put(     '/users',           passport.authenticate('jwt', {session:false}), UserController.update);     // U
@@ -22,6 +22,12 @@ router.delete(  '/users',           passport.authenticate('jwt', {session:false}
 router.post(    '/users/login',     UserController.login);
 
 router.get('/dash', passport.authenticate('jwt', {session:false}),HomeController.Dashboard)
+
+// Customer Routes
+// router.post(    '/customers',       CustomerController.create);     // C
+// router.get(     '/customers',       CustomerController.get);        // R
+// router.put(     '/customers',       CustomerController.update);     // U
+// router.delete(  '/customers',       Customerontroller.remove);      // D
 
 
 //********* API DOCUMENTATION **********

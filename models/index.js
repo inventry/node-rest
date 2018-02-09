@@ -26,7 +26,7 @@ Object.keys(db).forEach(modelName => {
 //************ DB RELATIONS ************
 
 
-//One to Many
+// One to Many (Currently commented out due to no associations)
 // db.Catalog.belongsTo(db.Company);
 // db.Company.hasMany(db.Catalog);
 
