@@ -25,6 +25,13 @@ cd node-rest
 npm install
 ```
 
+## Setup Local Environment
+
 #### Create .env File in Root
-You will find a example.env file in the home directory. Paste the contents of that into a file named .env in the same directory. 
-Fill in the variables to fit your application
+You will find a example.env file in the home directory. Paste the contents of that into a file named .env in the same directory and modify .env settings. 
+
+
+#### Run server
+```
+node app
+```
