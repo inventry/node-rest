@@ -33,5 +33,5 @@ You will find a example.env file in the home directory. Paste the contents of th
 
 #### Start the Server
 ```
-node app
+nodemon ./bin/www
 ```
