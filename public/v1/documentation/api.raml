@@ -1,0 +1,552 @@
+#%RAML 0.8
+title: Rest Node API mysql + JWT
+version: 1.0.0
+baseUri: 'http://api.your-url.com/api'
+documentation:
+  - title: Rest Node API mysql + JWT
+    content: |-
+      This is documentatin for the Node API. For every request you must include in the header: 
+       Content-Type: application/json 
+
+       For protected routes by authorization we use JWT. Each of these have a lock by them. Must include a Bearer Token in the header 
+       Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ...
+securitySchemes:
+  - bearer_auth:
+      type: OAuth 2.0
+      settings:
+        authorizationUri: 'http://api.your-url.io/v1/user/login'
+        accessTokenUri: ''
+        authorizationGrants:
+          - token
+  - api_key:
+      type: x-api-key
+      describedBy:
+        headers:
+          api_key:
+            type: string
+/users:
+  displayName: users
+  delete:
+    description: This can only be done by the logged in user.
+    responses:
+      '204':
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"ApiSuccessResponse\"\n}"
+            }
+        description: success
+      '401':
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+            }
+        description: unauthorized
+    securedBy:
+      - api_key
+    (tags):
+      - user
+  post:
+    description: Creates user that can now be used for authentication
+    body:
+      application/json: |-
+        {
+          "schema": "{\n    \"type\": \"CreateUser\"\n}"
+        }
+    responses:
+      '201':
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"CreateUserResponse\"\n}"
+            }
+        description: successful operation
+      '422':
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"ApiErrorResponse\"\n}"
+            }
+        description: Invalid operation
+    (tags):
+      - user
+  /restore:
+    displayName: restore
+    put:
+      body: {}
+      responses:
+        '204':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"ApiSuccessResponse\"\n}"
+              }
+          description: success
+        '401':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+              }
+          description: unauthorized
+      securedBy:
+        - api_key
+      (tags):
+        - user
+  get:
+    description: This can only be done by the logged in user.
+    responses:
+      '200':
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"ReturnUserResponse\"\n}"
+            }
+        description: successful operation
+      '401':
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+            }
+        description: unauthorized
+    securedBy:
+      - api_key
+    (tags):
+      - user
+  /hard:
+    displayName: hard
+    delete:
+      description: Remove user from database
+      responses:
+        '204':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"ApiSuccessResponse\"\n}"
+              }
+          description: success
+        '401':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+              }
+          description: unauthorized
+      securedBy:
+        - api_key
+      (tags):
+        - user
+  /login:
+    displayName: login
+    post:
+      description: Returns Bearer Token for JWT authentication
+      body:
+        application/json: |-
+          {
+            "schema": "{\n    \"type\": \"array\",\n    \"items\": {\n        \"type\": \"CreateUser\"\n    }\n}"
+          }
+      responses:
+        '204':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"LoginUserResponse\"\n}"
+              }
+          description: success
+        '422':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"ApiErrorResponse\"\n}"
+              }
+          description: error
+      (tags):
+        - user
+  put:
+    description: This can only be done by the logged in user.
+    body:
+      application/json: |-
+        {
+          "schema": "{\n    \"type\": \"UpdateUserBody\"\n}"
+        }
+    responses:
+      '200':
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"ApiSuccessResponse\"\n}"
+            }
+        description: successful request
+      '401':
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+            }
+        description: unauthorized
+    securedBy:
+      - api_key
+    (tags):
+      - user
+/apps:
+  displayName: apps
+  '/{app_id}':
+    displayName: app_id
+    uriParameters:
+      app_id:
+        description: name that need to be updated
+        type: string
+        displayName: name that need to be updated
+    delete:
+      description: soft delete app
+      responses:
+        '200':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"CreateUser\"\n}"
+              }
+          description: successful operation
+        '400':
+          body:
+            application/json: |-
+              {
+                "schema": "{}"
+              }
+          description: Invalid Order
+        '401':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+              }
+          description: unauthorized
+      securedBy:
+        - api_key
+      (tags):
+        - app
+    put:
+      description: Update App information
+      body:
+        application/json: |-
+          {
+            "schema": "{\n    \"type\": \"CreateUser\"\n}"
+          }
+      responses:
+        '200':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"CreateUser\"\n}"
+              }
+          description: successful operation
+        '400':
+          body:
+            application/json: |-
+              {
+                "schema": "{}"
+              }
+          description: Invalid Order
+        '401':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+              }
+          description: unauthorized
+      securedBy:
+        - api_key
+      (tags):
+        - app
+    /hard:
+      displayName: hard
+      delete:
+        description: All app information will be removed from database
+        responses:
+          '200':
+            body:
+              application/json: |-
+                {
+                  "schema": "{\n    \"type\": \"CreateUser\"\n}"
+                }
+            description: successful operation
+          '400':
+            body:
+              application/json: |-
+                {
+                  "schema": "{}"
+                }
+            description: Invalid Order
+          '401':
+            body:
+              application/json: |-
+                {
+                  "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+                }
+            description: unauthorized
+        securedBy:
+          - api_key
+        (tags):
+          - app
+    /restore:
+      displayName: restore
+      put:
+        description: All app information will be removed from database
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"CreateUser\"\n}"
+            }
+        responses:
+          '200':
+            body:
+              application/json: |-
+                {
+                  "schema": "{\n    \"type\": \"CreateUser\"\n}"
+                }
+            description: successful operation
+          '400':
+            body:
+              application/json: |-
+                {
+                  "schema": "{}"
+                }
+            description: Invalid Order
+          '401':
+            body:
+              application/json: |-
+                {
+                  "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+                }
+            description: unauthorized
+        securedBy:
+          - api_key
+        (tags):
+          - app
+    get:
+      description: Returns information about App
+      responses:
+        '200':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"CreateUser\"\n}"
+              }
+          description: successful operation
+        '400':
+          body:
+            application/json: |-
+              {
+                "schema": "{}"
+              }
+          description: Invalid Order
+        '401':
+          body:
+            application/json: |-
+              {
+                "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+              }
+          description: unauthorized
+      securedBy:
+        - api_key
+      (tags):
+        - app
+  post:
+    description: Creates a record of an App in our database
+    body: {}
+    responses:
+      '200':
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"object\",\n    \"additionalProperties\": {\n        \"type\": \"integer\",\n        \"format\": \"int32\"\n    }\n}"
+            }
+        description: successful operation
+      '401':
+        body:
+          application/json: |-
+            {
+              "schema": "{\n    \"type\": \"ApiUnauthorizezdResponse\"\n}"
+            }
+        description: unauthorized
+    securedBy:
+      - api_key
+    (tags):
+      - app
+annotationTypes:
+  tags: 'string[]'
+schemas:
+  - LoginUserResponse: |-
+      {
+          "title": "LoginUserResponse",
+          "type": "object",
+          "properties": {
+              "success": {
+                  "type": "boolean",
+                  "example": true
+              },
+              "token": {
+                  "type": "string",
+                  "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ...",
+                  "description": "Authentication token"
+              }
+          }
+      }
+  - UpdateUserBody: |-
+      {
+          "title": "UpdateUserBody",
+          "type": "object",
+          "properties": {
+              "first": {
+                  "type": "string",
+                  "example": "John"
+              },
+              "last": {
+                  "type": "string",
+                  "example": "doe"
+              },
+              "email": {
+                  "type": "string",
+                  "example": "john.doe@gmail.com"
+              },
+              "phone": {
+                  "type": "string",
+                  "example": "8889401234"
+              }
+          }
+      }
+  - CreateUserResponse: |-
+      {
+          "title": "CreateUserResponse",
+          "type": "object",
+          "properties": {
+              "success": {
+                  "type": "boolean",
+                  "example": true
+              },
+              "message": {
+                  "type": "string",
+                  "example": "Successfully created new user."
+              },
+              "token": {
+                  "type": "string",
+                  "example": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ...",
+                  "description": "Authentication token"
+              }
+          }
+      }
+  - ApiSuccessResponse: |-
+      {
+          "title": "ApiSuccessResponse",
+          "type": "object",
+          "properties": {
+              "success": {
+                  "type": "boolean",
+                  "example": true
+              },
+              "message": {
+                  "type": "string"
+              }
+          }
+      }
+  - ApiUnauthorizezdResponse: |-
+      {
+          "title": "ApiUnauthorizezdResponse",
+          "type": "string"
+      }
+  - ApiResponse: |-
+      {
+          "title": "ApiResponse",
+          "type": "object",
+          "properties": {
+              "code": {
+                  "type": "integer",
+                  "format": "int32"
+              },
+              "type": {
+                  "type": "string"
+              },
+              "message": {
+                  "type": "string"
+              }
+          }
+      }
+  - CreateUser: |-
+      {
+          "title": "CreateUser",
+          "type": "object",
+          "properties": {
+              "unique_key | email | phone": {
+                  "type": "string",
+                  "example": "8885678345"
+              },
+              "password": {
+                  "type": "string",
+                  "example": "secure-password"
+              }
+          }
+      }
+  - ReturnUserResponse: |-
+      {
+          "title": "ReturnUserResponse",
+          "type": "object",
+          "properties": {
+              "success": {
+                  "type": "boolean",
+                  "example": true
+              },
+              "user": {
+                  "type": "object",
+                  "properties": {
+                      "first": {
+                          "type": "string",
+                          "example": "John"
+                      },
+                      "last": {
+                          "type": "string",
+                          "example": "doe"
+                      },
+                      "email": {
+                          "type": "string",
+                          "example": "john.doe@gmail.com"
+                      },
+                      "phone": {
+                          "type": "string",
+                          "example": "8889401234"
+                      },
+                      "apps": {
+                          "type": "array",
+                          "items": {
+                              "type": "object",
+                              "properties": {
+                                  "_id": {
+                                      "type": "string",
+                                      "example": "12chd73nsjuf"
+                                  },
+                                  "url": {
+                                      "type": "string",
+                                      "example": "www.orangetech.io"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+  - ApiErrorResponse: |-
+      {
+          "title": "ApiErrorResponse",
+          "type": "object",
+          "properties": {
+              "success": {
+                  "type": "boolean",
+                  "example": false
+              },
+              "error": {
+                  "type": "string"
+              }
+          }
+      }

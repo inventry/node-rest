@@ -48,7 +48,7 @@ app.use(function (req, res, next) {
     next();
 });
 
-app.use('/v1', api);
+app.use('/api', api);
 
 app.use('/', function(req, res){
 	res.statusCode = 200;//send the appropriate status code
