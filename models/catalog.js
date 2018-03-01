@@ -1,14 +1,17 @@
 'use strict';
 
 module.exports = (sequelize, DataTypes) => {
-  var Company = sequelize.define('Company', {
-    name: DataTypes.STRING
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    }
+  var Model = sequelize.define('Catalog', {
+      name: DataTypes.STRING
   });
-  return Company;
+
+  Model.associate = function(models){
+    
+  };
+
+  Model.prototype.toWeb = function (pw) {
+      let json = this.toJSON();
+      return json;
+  };
+  return Model;
 };

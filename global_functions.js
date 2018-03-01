@@ -7,7 +7,7 @@ to = function(promise) {
     );
 }
 
-pe = require('parse-error');
+pe = require('parse-error'); //parses error so you can read error message and handle them accordingly
 
 TE = function(err_message, log){ // TE stands for Throw Error
     if(log === true){
@@ -38,3 +38,8 @@ ReS = function(res, data, code){ // Success Web Response
 
     return res.json(send_data)
 };
+
+//This is here to handle all the uncaught promise rejections
+process.on('unhandledRejection', error => {
+    console.error('Uncaught Error', pe(error));
+});

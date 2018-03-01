@@ -4,22 +4,22 @@ const bcrypt_p 		= require('bcrypt-promise');
 const jwt         = require('jsonwebtoken');
 
 module.exports = (sequelize, DataTypes) => {
-  var User = sequelize.define('User', {
-    first_name  : DataTypes.STRING,
-    last_name   : DataTypes.STRING,
-    email       : {type: DataTypes.STRING, allowNull: true, unique: true},
-    phone       : {type: DataTypes.STRING, allowNull: true, unique: true},
-    password    : DataTypes.STRING,
+  var Model = sequelize.define('User', {
+      first_name  : DataTypes.STRING,
+      last_name   : DataTypes.STRING,
+      email       : {type: DataTypes.STRING, allowNull: true, unique: true},
+      phone       : {type: DataTypes.STRING, allowNull: true, unique: true},
+      password    : DataTypes.STRING,
+  }); 
 
-  }, {
-    classMethods: {
-      associate: function(models) {
-        // associations can be defined here
-      }
-    },
-    hooks: {
-        beforeSave: async (user) => {
-          let err, salt, hash;
+  Model.associate = function(models){
+      this.Companies = this.belongsToMany(models.Company, {through: 'UserCompany'});
+  };
+
+  Model.beforeSave(async (user, options) => {
+      let err;
+      if (user.changed('password')){
+          let salt, hash
           [err, salt] = await to(bcrypt.genSalt(10));
           if(err) TE(err.message, true);
 
@@ -27,26 +27,29 @@ module.exports = (sequelize, DataTypes) => {
           if(err) TE(err.message, true);
 
           user.password = hash;
-        },
-    },
+      }
   });
 
-  User.prototype.comparePassword = async function (pw) {
-        let err, pass
-        if(!this.password) TE('password not set');
+  Model.prototype.comparePassword = async function (pw) {
+      let err, pass
+      if(!this.password) TE('password not set');
 
-        [err, pass] = await to(bcrypt_p.compare(pw, this.password));
-        if(err) TE(err);
+      [err, pass] = await to(bcrypt_p.compare(pw, this.password));
+      if(err) TE(err);
 
-        if(!pass) TE('invalid password');
+      if(!pass) TE('invalid password');
 
-        return this;
-    }
+      return this;
+  }
 
-    User.prototype.getJWT = function () {
-        let expiration_time = parseInt(CONFIG.jwt_expiration);
-        return "Bearer "+jwt.sign({user_id:this.id}, CONFIG.jwt_encryption, {expiresIn: expiration_time});
-    }
+  Model.prototype.getJWT = function () {
+      let expiration_time = parseInt(CONFIG.jwt_expiration);
+      return "Bearer "+jwt.sign({user_id:this.id}, CONFIG.jwt_encryption, {expiresIn: expiration_time});
+  };
 
-  return User;
+  Model.prototype.toWeb = function (pw) {
+      let json = this.toJSON();
+      return json;
+  };
+  return Model;
 };

@@ -6,7 +6,12 @@ var Sequelize = require('sequelize');
 var basename  = path.basename(__filename);
 var db        = {};
 
-var sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_password, {dialect:CONFIG.db_dialect, operatorsAliases:false});
+const sequelize = new Sequelize(CONFIG.db_name, CONFIG.db_user, CONFIG.db_password, {
+  host: CONFIG.db_host,
+  dialect: CONFIG.db_dialect,
+  port: CONFIG.db_port,
+  operatorsAliases: false
+});
 
 fs
   .readdirSync(__dirname)
@@ -23,16 +28,6 @@ Object.keys(db).forEach(modelName => {
     db[modelName].associate(db);
   }
 });
-//************ DB RELATIONS ************
-
-
-// One to Many (Currently commented out due to no associations)
-// db.Catalog.belongsTo(db.Company);
-// db.Company.hasMany(db.Catalog);
-
-//Many to Many
-db.User.belongsToMany(db.Company, {through: 'UserCompany'});
-db.Company.belongsToMany(db.User, {through: 'UserCompany'});
 
 //********* END OF DB RELATIONS ********
 db.sequelize = sequelize;
