@@ -7,6 +7,7 @@
 const app = require('../app');
 const debug = require('debug')('cluster:server');
 const http = require('http');
+const chalk = require('chalk');
 
 
 /**
@@ -90,6 +91,6 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 
-  console.log('\x1b[32m%s\x1b[0m', 'Server listening on port:', addr.port);
+  console.log(chalk.green('Server listening on port:', addr.port));
 
 }
