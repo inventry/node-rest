@@ -91,6 +91,6 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 
-  console.log(chalk.green('Server listening on port:', addr.port));
+  console.log(chalk.green.bold('Server listening on port:', addr.port));
 
 }
