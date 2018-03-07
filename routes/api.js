@@ -3,11 +3,12 @@ const router 			= express.Router();
 
 const UserController 	    = require('./../controllers/UserController');
 const CompanyController 	= require('./../controllers/CompanyController');
+// const CustomerController 	= require('./../controllers/CustomerController');
 const HomeController 	    = require('./../controllers/HomeController');
 const passport      	    = require('passport');
 const path                = require('path');
 
-const custom 	        = require('./../middleware/custom');
+const custom 	            = require('./../middleware/custom');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -22,20 +23,22 @@ router.delete(  '/users',           passport.authenticate('jwt', {session:false}
 router.post(    '/users/login',     UserController.login);
 
 // Company Routes
-router.post(    '/companies',             passport.authenticate('jwt', {session:false}), CompanyController.create);                  // C
-router.get(     '/companies',             passport.authenticate('jwt', {session:false}), CompanyController.getAll);                  // R
+router.post(    '/companies',               passport.authenticate('jwt', {session:false}), CompanyController.create);                  // C
+router.get(     '/companies',               passport.authenticate('jwt', {session:false}), CompanyController.getAll);                  // R
 
-router.get(     '/companies/:company_id', passport.authenticate('jwt', {session:false}), custom.company, CompanyController.get);     // R
-router.put(     '/companies/:company_id', passport.authenticate('jwt', {session:false}), custom.company, CompanyController.update);  // U
-router.delete(  '/companies/:company_id', passport.authenticate('jwt', {session:false}), custom.company, CompanyController.remove);  // D
-
-router.get('/dash', passport.authenticate('jwt', {session:false}),HomeController.Dashboard)
+router.get(     '/companies/:company_id',   passport.authenticate('jwt', {session:false}), custom.company, CompanyController.get);     // R
+router.put(     '/companies/:company_id',   passport.authenticate('jwt', {session:false}), custom.company, CompanyController.update);  // U
+router.delete(  '/companies/:company_id',   passport.authenticate('jwt', {session:false}), custom.company, CompanyController.remove);  // D
 
 // Customer Routes
-// router.post(    '/customers',       CustomerController.create);     // C
-// router.get(     '/customers',       CustomerController.get);        // R
-// router.put(     '/customers',       CustomerController.update);     // U
-// router.delete(  '/customers',       Customerontroller.remove);      // D
+// router.post(    '/customers',               passport.authenticate('jwt', {session:false}), CustomerController.create);                    // C
+// router.get(     '/customers',               passport.authenticate('jwt', {session:false}), CustomerController.getAll);                       // R
+
+// router.get(     '/companies/:customer_id',  passport.authenticate('jwt', {session:false}), custom.customer, CustomerController.get);      // R
+// router.put(     '/customers/:customer_id',  passport.authenticate('jwt', {session:false}), custom.customer, CustomerController.update);  // U
+// router.delete(  '/customers/:customer_id',  passport.authenticate('jwt', {session:false}), custom.customer, CustomerController.remove);  // D
+
+router.get('/dash', passport.authenticate('jwt', {session:false}),HomeController.Dashboard)
 
 
 //********* API DOCUMENTATION **********

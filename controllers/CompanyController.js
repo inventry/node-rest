@@ -1,12 +1,12 @@
 const Company = require('../models').Company;
 
+// CREATE
 const create = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let err, company;
     let user = req.user;
 
     let company_info = req.body;
-
 
     [err, company] = await to(Company.create(company_info));
     if(err) return ReE(res, err, 422);
@@ -23,6 +23,7 @@ const create = async function(req, res){
 }
 module.exports.create = create;
 
+// GET ALL COMPANIES THAT BELONG TO USER
 const getAll = async function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let user = req.user;
@@ -50,6 +51,7 @@ const getAll = async function(req, res){
 }
 module.exports.getAll = getAll;
 
+// GET
 const get = function(req, res){
     res.setHeader('Content-Type', 'application/json');
     let company = req.company;
@@ -58,6 +60,7 @@ const get = function(req, res){
 }
 module.exports.get = get;
 
+// UPDATE
 const update = async function(req, res){
     let err, company, data;
     company = req.company;
@@ -72,6 +75,7 @@ const update = async function(req, res){
 }
 module.exports.update = update;
 
+// DELETE
 const remove = async function(req, res){
     let company, err;
     company = req.company;

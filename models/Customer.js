@@ -7,10 +7,10 @@ module.exports = (sequelize, DataTypes) => {
       customer_code     : DataTypes.STRING,
       email             : {type: DataTypes.STRING, allowNull: true, unique: true},
       phone             : {type: DataTypes.STRING, allowNull: true},
-    });
+  });
 
   Model.associate = function(models){
-
+      this.Users = this.belongsToMany(models.User, {through: 'UserCustomer'});
   };
 
   Model.prototype.toWeb = function (pw) {
