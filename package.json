@@ -18,13 +18,13 @@
     "express": "^4.16.2",
     "morgan": "^1.9.0",
     "mysql2": "^1.5.1",
-    "nodemon": "^1.14.12",
+    "nodemon": "^1.17.1",
     "parse-error": "^0.2.0",
     "passport": "^0.4.0",
     "passport-jwt": "^3.0.1",
-    "sequelize": "^4.32.2",
+    "sequelize": "^4.35.2",
     "sequelize-cli": "^3.2.0",
     "serve-favicon": "^2.4.5",
-    "validator": "^9.3.0"
+    "validator": "^9.4.1"
   }
 }
